@@ -28,7 +28,5 @@ object Stochastic {
     Lexemes(lexemes)
   }
 
-  def loadWords(): Array[String] = {
-    Source.fromResource("words").getLines().toArray.sorted
-  }
+  def loadWords(): Array[String] = Source.fromResource("words").getLines().toArray.sorted
 }
