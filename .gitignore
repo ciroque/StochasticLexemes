@@ -1,0 +1,8 @@
+/RUNNING_PID
+/project/
+/target/
+
+.idea/
+target/
+*.iml
+.sbtserver/
