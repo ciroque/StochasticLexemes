@@ -7,8 +7,8 @@ import scala.util.Random
 
 class Stochastic extends Actor {
   override def receive: Receive = {
-    case LexemeRequest(howMany) =>
-      sender() ! Stochastic.selectRandomWords(howMany)
+    case request: LexemeRequest =>
+      sender() ! Stochastic.selectRandomWords(request)
   }
 }
 
@@ -16,11 +16,15 @@ object Stochastic {
   lazy val words: Array[String] = loadWords()
   lazy val random: Random = new Random(System.nanoTime())
 
-  def selectRandomWords(howMany: Int): Lexemes = {
+  def selectRandomWords(request: LexemeRequest): Lexemes = {
+    val candidates = if(request.maxWordLength == -1) words
+    else words.filter(word => word.length <= request.maxWordLength)
+
     val lexemes = (for(
-      index <- 1 to howMany ;
-      randomIndex = random.nextInt(words.length)
-    ) yield words(randomIndex)).toList
+      index <- 1 to request.howMany ;
+      randomIndex = random.nextInt(candidates.length)
+    ) yield candidates(randomIndex)).toList
+
     Lexemes(lexemes)
   }
 

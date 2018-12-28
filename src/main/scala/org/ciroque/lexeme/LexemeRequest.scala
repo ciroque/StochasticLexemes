@@ -1,3 +1,3 @@
 package org.ciroque.lexeme
 
-case class LexemeRequest(hostMany: Int)
+case class LexemeRequest(howMany: Int, maxWordLength: Int = -1)
