@@ -46,9 +46,8 @@ jobs:
 
       - run:
           name: Build Prod
-          command: cat /dev/null | sbt prod:compile
+          command: cat /dev/null | sbt compile
 
       - run:
           name: Create distribution
-          command: |
-            sbt dist
+          command: cat /dev/null | sbt dist
