@@ -17,16 +17,25 @@ object Stochastic {
   lazy val random: Random = new Random(System.nanoTime())
 
   def selectRandomWords(request: LexemeRequest): Lexemes = {
-    val candidates = if(request.maxWordLength == -1) words
-    else words.filter(word => word.length <= request.maxWordLength)
+    candidateWords(request) match {
+      case Array() => Lexemes(List[String]())
+      case candidates =>
+        val lexemes = (for(
+          index <- 1 to request.howMany ;
+          randomIndex = random.nextInt(candidates.length)
+        ) yield candidates(randomIndex)).toList
 
-    val lexemes = (for(
-      index <- 1 to request.howMany ;
-      randomIndex = random.nextInt(candidates.length)
-    ) yield candidates(randomIndex)).toList
-
-    Lexemes(lexemes)
+        Lexemes(lexemes)
+    }
   }
 
   def loadWords(): Array[String] = Source.fromResource("words").getLines().toArray.sorted
+
+  private def candidateWords(request: LexemeRequest): Array[String] = {
+    val filtered: Array[String] = if(request.maxWordLength == -1) words
+    else words.filter(word => word.length <= request.maxWordLength)
+
+    (if(request.minWordLength == -1) filtered
+    else filtered.filter(word => word.length >= request.minWordLength)).toArray[String]
+  }
 }

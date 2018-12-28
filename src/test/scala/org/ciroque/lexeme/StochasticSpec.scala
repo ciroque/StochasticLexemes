@@ -41,5 +41,36 @@ class StochasticSpec
       words.length shouldEqual wordCount
       words.forall(word => word.length <= maxWordLength) shouldBe true
     }
+
+    "should respect minWordLength" in {
+      val wordCount = 7
+      val minWordLength = 3
+      val stochastic = system.actorOf(Props(new Stochastic()))
+      stochastic ! LexemeRequest(wordCount, -1, minWordLength)
+      val Lexemes(words) = receiveOne(1 seconds)
+      words.length shouldEqual wordCount
+      words.forall(word => word.length >= minWordLength) shouldBe true
+    }
+
+    "should respect maxWordLength and minWordLength" in {
+      val wordCount = 7
+      val maxWordLength = 6
+      val minWordLength = 3
+      val stochastic = system.actorOf(Props(new Stochastic()))
+      stochastic ! LexemeRequest(wordCount, maxWordLength, minWordLength)
+      val Lexemes(words) = receiveOne(1 seconds)
+      words.length shouldEqual wordCount
+      words.forall(word => word.length >= minWordLength && word.length <= maxWordLength) shouldBe true
+    }
+
+    "should return empty list for contradictory min / max values" in {
+      val wordCount = 7
+      val maxWordLength = 3
+      val minWordLength = 6
+      val stochastic = system.actorOf(Props(new Stochastic()))
+      stochastic ! LexemeRequest(wordCount, maxWordLength, minWordLength)
+      val Lexemes(words) = receiveOne(1 seconds)
+      words.length shouldEqual 0
+    }
   }
 }
