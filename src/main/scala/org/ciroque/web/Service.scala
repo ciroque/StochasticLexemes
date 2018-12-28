@@ -26,12 +26,15 @@ trait Service extends Protocols {
   implicit def requestTimeout: Timeout = Timeout(5 seconds)
   val stochastic: ActorRef = system.actorOf(Props(new Stochastic()))
   lazy val routes: Route = {
-    pathPrefix("api") {
-      path("words") {
-        get {
-          val result = (stochastic ? LexemeRequest(7, 5)).mapTo[Lexemes]
+    parameters("howMany".as[Int] ? 3, "maxWordLength".as[Int] ? -1) {
+      (howMany, maxWordLength) =>
+      pathPrefix("api") {
+        path("words") {
+          get {
+            val result = (stochastic ? LexemeRequest(howMany, maxWordLength)).mapTo[Lexemes]
 
-          complete(result)
+            complete(result)
+          }
         }
       }
     }
