@@ -44,10 +44,10 @@ jobs:
           name: Run tests
           command: cat /dev/null | sbt test:test
 
-      - run:
-          name: Build Prod
-          command: cat /dev/null | sbt compile
-
-      - run:
-          name: Create distribution
-          command: cat /dev/null | sbt dist
+#      - run:
+#          name: Build Prod
+#          command: cat /dev/null | sbt compile
+#
+#      - run:
+#          name: Create distribution
+#          command: cat /dev/null | sbt dist
