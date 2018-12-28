@@ -31,9 +31,7 @@ trait Service extends Protocols {
       pathPrefix("api") {
         path("words") {
           get {
-            val result = (stochastic ? LexemeRequest(howMany, maxWordLength)).mapTo[Lexemes]
-
-            complete(result)
+            complete((stochastic ? LexemeRequest(howMany, maxWordLength)).mapTo[Lexemes])
           }
         }
       }
