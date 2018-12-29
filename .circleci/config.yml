@@ -50,10 +50,14 @@ jobs:
 
       - run:
           name: Create distribution
-          command: pwd && ls -l ./project && cat /dev/null | sbt assembly
+          command: cat /dev/null | sbt assembly
+
+      - run:
+          name: Find jar file
+          command: find . -name *.jar
 
       - persist_to_workspace:
-          root: ./target/scala-2.12/
+          root: target/scala-2.12/
           paths: stochastic-lexemes-assembly-1.0.jar
 
       - type: setup-docker-engine
