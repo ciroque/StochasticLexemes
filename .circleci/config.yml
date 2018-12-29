@@ -73,6 +73,12 @@ jobs:
             docker stop stochastic-lexemes
 
       - run:
+          name: Publish container tagged with branch
+          command: |
+            docker push ciroque/stochastic-lexemes:$CIRCLE_BRANCH
+            docker tag ciroque/stochastic-lexemes:$CIRCLE_BRANCH ciroque/stochastic-lexemes:release
+
+      - run:
           name: Publish latest if master
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
