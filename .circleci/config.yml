@@ -53,13 +53,16 @@ jobs:
           command: pwd && ls -l ./project && cat /dev/null | sbt assembly
 
       - persist_to_workspace:
-          root: /tmp
-          paths: stochastic-lexemes-assembly*.jar
+          root: ./target/scala-2.12/
+          paths: stochastic-lexemes-assembly-1.0.jar
+
+      - attach_workspace:
+              at: /tmp/workspace
 
       - run:
           name: Dockerize
           command: |
             docker build -t ciroque/StochasticLexemes:$CIRCLE_BRANCH .
             docker run --name StochasticLexemes ciroque/StochasticLexemes:$CIRCLE_BRANCH
-            docker cp /tmp/stochastic-lexemes-assembly*.jar StochasticLexemes:/opt/StochasticLexemes
+            docker cp /tmp/workspace/stochastic-lexemes-assembly-1.0.jar StochasticLexemes:/opt/StochasticLexemes
             docker stop StochasticLexemes
