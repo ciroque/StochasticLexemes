@@ -66,7 +66,17 @@ jobs:
       - run:
           name: Dockerize
           command: |
+            docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker build -t ciroque/stochastic-lexemes:$CIRCLE_BRANCH .
             docker run --name stochastic-lexemes ciroque/stochastic-lexemes:$CIRCLE_BRANCH
             docker cp ./target/scala-2.12/stochastic-lexemes-assembly-1.0.jar stochastic-lexemes:/opt/StochasticLexemes
             docker stop stochastic-lexemes
+
+      - run:
+          name: Publish latest if master
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              docker tag ciroque/stochastic-lexemes:release ciroque/stochastic-lexemes:latest
+              docker push ciroque/stochastic-lexemes:latest
+            fi
+
