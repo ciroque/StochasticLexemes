@@ -56,8 +56,11 @@ jobs:
           root: ./target/scala-2.12/
           paths: stochastic-lexemes-assembly-1.0.jar
 
+      - type: setup-docker-engine
+        version: 17.06.0-ce
+
       - attach_workspace:
-              at: /tmp/workspace
+          at: /tmp/workspace
 
       - run:
           name: Dockerize
