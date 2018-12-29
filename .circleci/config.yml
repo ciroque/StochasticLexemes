@@ -62,7 +62,7 @@ jobs:
       - run:
           name: Dockerize
           command: |
-            docker build -t ciroque/StochasticLexemes:$CIRCLE_BRANCH .
-            docker run --name StochasticLexemes ciroque/StochasticLexemes:$CIRCLE_BRANCH
-            docker cp /tmp/workspace/stochastic-lexemes-assembly-1.0.jar StochasticLexemes:/opt/StochasticLexemes
-            docker stop StochasticLexemes
+            docker build -t ciroque/stochastic-lexemes:$CIRCLE_BRANCH .
+            docker run --name stochastic-lexemes ciroque/stochastic-lexemes:$CIRCLE_BRANCH
+            docker cp /tmp/workspace/stochastic-lexemes-assembly-1.0.jar stochastic-lexemes:/opt/StochasticLexemes
+            docker stop stochastic-lexemes
