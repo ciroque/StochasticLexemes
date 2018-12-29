@@ -10,11 +10,12 @@ import org.ciroque.lexeme.{LexemeRequest, Lexemes, Stochastic}
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
-import scala.concurrent.ExecutionContextExecutor
+import scala.concurrent.{ExecutionContextExecutor, Future}
 
 trait Protocols {
   import DefaultJsonProtocol._
   implicit val lexemesFormat: RootJsonFormat[Lexemes] = jsonFormat1(Lexemes)
+  implicit val jsonApiFormat: RootJsonFormat[JsonApi] = jsonFormat1(JsonApi)
 }
 
 trait Service extends Protocols {
@@ -31,7 +32,8 @@ trait Service extends Protocols {
       pathPrefix("api") {
         path("words") {
           get {
-            complete((stochastic ? LexemeRequest(howMany, maxWordLength, minWordLength)).mapTo[Lexemes])
+            val wtf = (stochastic ? LexemeRequest(howMany, maxWordLength, minWordLength)).mapTo[Lexemes]
+            complete(wtf.flatMap(l => Future(JsonApi(l))))
           }
         }
       }
