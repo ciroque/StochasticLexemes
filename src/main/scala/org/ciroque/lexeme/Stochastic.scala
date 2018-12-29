@@ -21,7 +21,7 @@ object Stochastic {
       case Array() => Lexemes(List[String]())
       case candidates =>
         val lexemes = (for(
-          index <- 1 to request.howMany ;
+          _ <- 1 to request.howMany ;
           randomIndex = random.nextInt(candidates.length)
         ) yield candidates(randomIndex)).toList
 
