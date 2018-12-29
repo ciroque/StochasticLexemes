@@ -68,9 +68,6 @@ jobs:
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
             docker build -t ciroque/stochastic-lexemes:$CIRCLE_BRANCH .
-            docker run --name stochastic-lexemes ciroque/stochastic-lexemes:$CIRCLE_BRANCH
-            docker cp ./target/scala-2.12/stochastic-lexemes-assembly-1.0.jar stochastic-lexemes:/opt/StochasticLexemes
-            docker stop stochastic-lexemes
 
       - run:
           name: Publish container tagged with branch
