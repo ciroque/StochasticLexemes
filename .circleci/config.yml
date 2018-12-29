@@ -67,5 +67,5 @@ jobs:
           command: |
             docker build -t ciroque/stochastic-lexemes:$CIRCLE_BRANCH .
             docker run --name stochastic-lexemes ciroque/stochastic-lexemes:$CIRCLE_BRANCH
-            docker cp /tmp/workspace/stochastic-lexemes-assembly-1.0.jar stochastic-lexemes:/opt/StochasticLexemes
+            docker cp /tmp/workspace/* stochastic-lexemes:/opt/StochasticLexemes
             docker stop stochastic-lexemes
