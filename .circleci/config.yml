@@ -56,15 +56,8 @@ jobs:
           name: Find jar file
           command: find . -name *.jar
 
-      - persist_to_workspace:
-          root: ./target/scala-2.12/
-          paths: stochastic-lexemes-assembly-1.0.jar
-
       - type: setup-docker-engine
         version: 17.06.0-ce
-
-      - attach_workspace:
-          at: /tmp/workspace
 
       - run:
           name: Find jar file now...
@@ -75,5 +68,5 @@ jobs:
           command: |
             docker build -t ciroque/stochastic-lexemes:$CIRCLE_BRANCH .
             docker run --name stochastic-lexemes ciroque/stochastic-lexemes:$CIRCLE_BRANCH
-            docker cp /tmp/workspace/stochastic-lexemes-assembly-1.0.jar stochastic-lexemes:/opt/StochasticLexemes
+            docker cp ./target/scala-2.12/stochastic-lexemes-assembly-1.0.jar stochastic-lexemes:/opt/StochasticLexemes
             docker stop stochastic-lexemes
