@@ -55,3 +55,11 @@ jobs:
       - persist_to_workspace:
           root: /tmp/jarsy
           paths: stochastic-lexemes-assembly*.jar
+
+      - run:
+          name: Dockerize
+          command: |
+            docker build -t ciroque/StochasticLexemes:$CIRCLE_BRANCH .
+            docker run --name StochasticLexemes ciroque/StochasticLexemes:$CIRCLE_BRANCH
+            docker cp /tmp/jarsy/stochastic-lexemes-assembly*.jar StochasticLexemes:/opt/StochasticLexemes
+            docker stop StochasticLexemes
