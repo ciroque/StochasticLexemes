@@ -51,3 +51,7 @@ jobs:
       - run:
           name: Create distribution
           command: pwd && ls -l ./project && cat /dev/null | sbt assembly
+
+      - persist_to_workspace:
+          root: /tmp/jarsy
+          paths: stochastic-lexemes-assembly*.jar
