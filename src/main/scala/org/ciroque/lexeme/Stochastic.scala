@@ -20,12 +20,9 @@ object Stochastic {
     candidateWords(request) match {
       case Array() => Lexemes(List[String]())
       case candidates =>
-        val lexemes = (for(
-          _ <- 1 to request.howMany ;
-          randomIndex = random.nextInt(candidates.length)
-        ) yield candidates(randomIndex)).toList
-
-        Lexemes(lexemes)
+        val indexes = Random.shuffle(candidates.indices.toList).take(request.howMany)
+        var lexes = indexes.map(index => candidates(index)).toList
+        Lexemes(lexes)
     }
   }
 
