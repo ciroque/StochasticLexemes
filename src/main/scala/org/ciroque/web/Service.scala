@@ -1,17 +1,17 @@
 package org.ciroque.web
 
-import akka.pattern.ask
 import akka.actor.{ActorRef, ActorSystem, Props}
-import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.model.HttpMethods._
 import akka.http.scaladsl.model.headers._
+import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
+import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.{Directive0, Route}
+import akka.pattern.ask
 import akka.util.Timeout
 import com.typesafe.config.Config
-import org.ciroque.lexeme.{LexemeRequest, Lexemes, Stochastic}
+import org.ciroque.lexeme._
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-import akka.http.scaladsl.model.{HttpResponse, StatusCodes}
 
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
@@ -56,17 +56,52 @@ trait Service extends Protocols with CORSHandler {
 //  val logger: LoggingAdapter
   implicit def requestTimeout: Timeout = Timeout(5 seconds)
   val stochastic: ActorRef = system.actorOf(Props(new Stochastic()))
-  lazy val routes: Route = corsHandler({
+
+  lazy val wordsRoute: Route = corsHandler({
     parameters("howMany".as[Int] ? 3, "maxWordLength".as[Int] ? -1, "minWordLength".as[Int] ? -1) {
       (howMany, maxWordLength, minWordLength) =>
       pathPrefix("api") {
         path("words") {
           get {
-            val eventualLexemes = (stochastic ? LexemeRequest(howMany, maxWordLength, minWordLength)).mapTo[Lexemes]
+            val eventualLexemes = (stochastic ? WordRequest(howMany, maxWordLength, minWordLength)).mapTo[Lexemes]
             complete(eventualLexemes.flatMap(l => Future(JsonApi(l))))
           }
         }
       }
     }
   })
+
+  lazy val adjectivesRoute: Route = corsHandler({
+    parameters("howMany".as[Int] ? 3, "maxWordLength".as[Int] ? -1, "minWordLength".as[Int] ? -1) {
+      (howMany, maxWordLength, minWordLength) =>
+      pathPrefix("api") {
+        pathPrefix("words") {
+          path("adjectives") {
+            get {
+              val eventualLexemes = (stochastic ? AdjectiveRequest(howMany, maxWordLength, minWordLength)).mapTo[Lexemes]
+              complete(eventualLexemes.flatMap(l => Future(JsonApi(l))))
+            }
+          }
+        }
+      }
+    }
+  })
+
+  lazy val nounsRoute: Route = corsHandler({
+    parameters("howMany".as[Int] ? 3, "maxWordLength".as[Int] ? -1, "minWordLength".as[Int] ? -1) {
+      (howMany, maxWordLength, minWordLength) =>
+      pathPrefix("api") {
+        pathPrefix("words") {
+          path("nouns") {
+            get {
+              val eventualLexemes = (stochastic ? NounRequest(howMany, maxWordLength, minWordLength)).mapTo[Lexemes]
+              complete(eventualLexemes.flatMap(l => Future(JsonApi(l))))
+            }
+          }
+        }
+      }
+    }
+  })
+
+  lazy val routes: Route = wordsRoute ~ adjectivesRoute ~ nounsRoute
 }
