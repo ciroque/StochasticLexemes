@@ -1,0 +1,24 @@
+name: assemble
+run-name: Assembling branch "${{ github.head_ref || github.ref_name }}"
+on: [workflow_call]
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Configure JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 8
+          distribution: temurin
+
+      - name: Assemble
+        run: sbt assembly
+
+      - name: Store build artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: stochastic-lexemes-assembly
+          path: target/scala-2.13/stochastic-lexemes-assembly-1.0.1.jar

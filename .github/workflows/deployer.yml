@@ -1,0 +1,18 @@
+name: deployer
+run-name: Deploying Image
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+jobs:
+  build:
+    uses: ./.github/workflows/builder.yml
+
+  tests:
+    uses: ./.github/workflows/tester.yml
+    needs: [build]
+
+  assemble:
+    uses: ./.github/workflows/assembler.yml
+    needs: [tests]

@@ -1,0 +1,18 @@
+name: build-pipeline
+run-name: Running verification for branch "${{ github.head_ref || github.ref_name }}"
+on: [push, pull_request]
+jobs:
+  build:
+    uses: ./.github/workflows/builder.yml
+
+  tests:
+    uses: ./.github/workflows/tester.yml
+    needs: [build]
+
+  assemble:
+    uses: ./.github/workflows/assembler.yml
+    needs: [tests]
+
+  build-image:
+    uses: ./.github/workflows/image-builder.yml
+    needs: [assemble]
