@@ -16,3 +16,8 @@ jobs:
   assemble:
     uses: ./.github/workflows/assembler.yml
     needs: [tests]
+
+  build-image:
+    uses: ./.github/workflows/image-builder.yml
+    needs: [assemble]
+

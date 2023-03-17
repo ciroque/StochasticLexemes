@@ -17,6 +17,12 @@ jobs:
       - name: Assemble
         run: sbt assembly
 
+      - name: Store Dockerfile
+        uses: actions/upload-artifact@v2
+        with:
+          name: stochastic-lexemes-dockerfile
+          path: Dockerfile
+
       - name: Store build artifact
         uses: actions/upload-artifact@v2
         with:
