@@ -2,17 +2,22 @@ package org.ciroque.lexeme
 
 import akka.actor.{ActorSystem, Props}
 import akka.testkit.{ImplicitSender, TestKit}
-import org.scalatest.{BeforeAndAfterAll, MustMatchers, Matchers, WordSpecLike}
+import org.scalatest.BeforeAndAfterAll
+import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.scalatest.wordspec.AnyWordSpecLike
+
 import scala.concurrent.duration._
+import scala.language.postfixOps
 
 class StochasticSpec
   extends TestKit(ActorSystem("LexemeStochasticSpec"))
-  with ImplicitSender
-  with WordSpecLike
+  with AnyWordSpecLike
   with Matchers
+  with ImplicitSender
   with BeforeAndAfterAll {
 
-  override def afterAll: Unit = {
+  override def afterAll(): Unit = {
     TestKit.shutdownActorSystem(system)
   }
 
