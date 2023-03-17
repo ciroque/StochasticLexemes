@@ -12,7 +12,7 @@ import akka.util.Timeout
 import com.typesafe.config.Config
 import org.ciroque.lexeme._
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
-
+import scala.language.postfixOps
 import scala.concurrent.{ExecutionContextExecutor, Future}
 
 trait Protocols {
@@ -55,6 +55,7 @@ trait Service extends Protocols with CORSHandler {
   def config: Config
 //  val logger: LoggingAdapter
   implicit def requestTimeout: Timeout = Timeout(5 seconds)
+
   val stochastic: ActorRef = system.actorOf(Props(new Stochastic()))
 
   lazy val wordsRoute: Route = corsHandler({
