@@ -4,21 +4,18 @@ on: [workflow_call]
 jobs:
   build-image:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.working-directory }}
     steps:
       - name: Download fat jar
         uses: actions/download-artifact@v2
         with:
           name: stochastic-lexemes-assembly
-          path: ./Dockerfile
+          path: .
 
       - name: Download Dockerfile
         uses: actions/download-artifact@v2
         with:
           name: stochastic-lexemes-dockerfile
-          path: ./Dockerfile
+          path: .
 
       - name: Build Image
         uses: docker/build-push-action@v2
