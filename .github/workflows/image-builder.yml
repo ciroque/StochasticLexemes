@@ -2,6 +2,10 @@ name: build-image
 run-name: Building Image
 on: [workflow_call]
 jobs:
+  defaults:
+    run:
+      working-directory: ${{ env.working-directory }}
+
   build-image:
     runs-on: ubuntu-latest
     steps:
@@ -9,13 +13,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: stochastic-lexemes-assembly
-          path: target/scala-2.13/stochastic-lexemes-assembly-1.0.1.jar
+          path: ./Dockerfile
 
       - name: Download Dockerfile
         uses: actions/download-artifact@v2
         with:
           name: stochastic-lexemes-dockerfile
-          path: Dockerfile
+          path: ./Dockerfile
 
       - name: Build Image
         uses: docker/build-push-action@v2
