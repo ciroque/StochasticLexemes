@@ -2,12 +2,11 @@ name: build-image
 run-name: Building Image
 on: [workflow_call]
 jobs:
-  defaults:
-    run:
-      working-directory: ${{ env.working-directory }}
-
   build-image:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.working-directory }}
     steps:
       - name: Download fat jar
         uses: actions/download-artifact@v2
