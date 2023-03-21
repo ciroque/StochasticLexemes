@@ -56,10 +56,6 @@ jobs:
           name: Find jar file
           command: JAR_LOCATION=$(find . -name *.jar) && mv $JAR_LOCATION .
 
-#      - run:
-#          name: Move JAR to root
-#          command: mv $JAR_LOCATION .
-
       - type: setup-docker-engine
         version: 17.06.0-ce
 
