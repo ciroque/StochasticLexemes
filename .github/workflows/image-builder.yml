@@ -1,5 +1,4 @@
 name: build-image
-author: Steve Wagner <ciroque@live.com>
 run-name: Building Image
 on: [workflow_call]
 jobs:

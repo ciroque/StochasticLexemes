@@ -1,5 +1,4 @@
 name: test
-author: Steve Wagner <ciroque@live.com>
 run-name: Testing branch "${{ github.head_ref || github.ref_name }}"
 on: [workflow_call]
 jobs:
