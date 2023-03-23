@@ -1,4 +1,5 @@
 name: assemble
+author: Steve Wagner <ciroque@live.com>
 run-name: Assembling branch "${{ github.head_ref || github.ref_name }}"
 on: [workflow_call]
 jobs:

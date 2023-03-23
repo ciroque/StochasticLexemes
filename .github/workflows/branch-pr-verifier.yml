@@ -1,4 +1,5 @@
 name: build-pipeline
+author: Steve Wagner <ciroque@live.com>
 run-name: Running verification for branch "${{ github.head_ref || github.ref_name }}"
 on: [push, pull_request]
 jobs:

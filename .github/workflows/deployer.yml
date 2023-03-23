@@ -1,4 +1,5 @@
 name: deployer
+author: Steve Wagner <ciroque@live.com>
 run-name: Deploying Image
 on:
   pull_request:
